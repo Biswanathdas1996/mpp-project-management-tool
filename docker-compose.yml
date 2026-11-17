@@ -1,0 +1,114 @@
+# Production-shaped single-host deployment of PMA.
+#   cp .env.example .env   # then set secrets
+#   docker compose up -d --build
+#   docker compose --profile ai up -d      # also run self-hosted Ollama
+# UI: http://localhost:8080   API docs: http://localhost:8080/api/docs
+
+x-backend-env: &backend-env
+  PMA_ENV: production
+  PMA_DATABASE_URL: postgresql+psycopg://pma:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@postgres:5432/pma
+  PMA_SECRET_KEY: ${PMA_SECRET_KEY:?set PMA_SECRET_KEY}
+  PMA_BOOTSTRAP_ADMIN_EMAIL: ${PMA_BOOTSTRAP_ADMIN_EMAIL:-admin@pma.local}
+  PMA_BOOTSTRAP_ADMIN_PASSWORD: ${PMA_BOOTSTRAP_ADMIN_PASSWORD:?set PMA_BOOTSTRAP_ADMIN_PASSWORD}
+  PMA_BOOTSTRAP_TENANT_NAME: ${PMA_BOOTSTRAP_TENANT_NAME:-Default Organisation}
+  PMA_CORS_ORIGINS: ${PMA_PUBLIC_URL:-http://localhost:8080}
+  PMA_FRONTEND_URL: ${PMA_PUBLIC_URL:-http://localhost:8080}
+  PMA_QUEUE_BACKEND: rq
+  PMA_REDIS_URL: redis://redis:6379/0
+  PMA_STORAGE_BACKEND: ${PMA_STORAGE_BACKEND:-s3}
+  PMA_S3_ENDPOINT_URL: ${PMA_S3_ENDPOINT_URL:-http://minio:9000}
+  PMA_S3_BUCKET: ${PMA_S3_BUCKET:-pma-snapshots}
+  PMA_S3_ACCESS_KEY: ${MINIO_ROOT_USER:-pma}
+  PMA_S3_SECRET_KEY: ${MINIO_ROOT_PASSWORD:?set MINIO_ROOT_PASSWORD}
+  PMA_AZURE_CONNECTION_STRING: ${PMA_AZURE_CONNECTION_STRING:-}
+  PMA_AI_DEFAULT_MODE: ${PMA_AI_DEFAULT_MODE:-off}
+  PMA_AI_DEFAULT_MODEL: ${PMA_AI_DEFAULT_MODEL:-deepseek-v4.1-flash:cloud}
+  PMA_OLLAMA_SELF_HOSTED_URL: ${PMA_OLLAMA_SELF_HOSTED_URL:-http://ollama:11434}
+  PMA_OLLAMA_CLOUD_API_KEY: ${PMA_OLLAMA_CLOUD_API_KEY:-}
+  PMA_OIDC_ENABLED: ${PMA_OIDC_ENABLED:-false}
+  PMA_OIDC_ISSUER: ${PMA_OIDC_ISSUER:-}
+  PMA_OIDC_CLIENT_ID: ${PMA_OIDC_CLIENT_ID:-}
+  PMA_OIDC_CLIENT_SECRET: ${PMA_OIDC_CLIENT_SECRET:-}
+  PMA_OIDC_REDIRECT_URI: ${PMA_PUBLIC_URL:-http://localhost:8080}/api/auth/oidc/callback
+  PMA_SMTP_HOST: ${PMA_SMTP_HOST:-}
+  PMA_SMTP_PORT: ${PMA_SMTP_PORT:-587}
+  PMA_SMTP_USER: ${PMA_SMTP_USER:-}
+  PMA_SMTP_PASSWORD: ${PMA_SMTP_PASSWORD:-}
+  PMA_SMTP_FROM: ${PMA_SMTP_FROM:-pma@localhost}
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pma
+      POSTGRES_USER: pma
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pma -d pma"]
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: [redisdata:/data]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      retries: 20
+
+  minio:
+    image: minio/minio:RELEASE.2024-12-18T13-15-44Z
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-pma}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes: [miniodata:/data]
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      retries: 20
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    environment: *backend-env
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+      minio: { condition: service_healthy }
+
+  worker:
+    build: ./backend
+    restart: unless-stopped
+    command: ["python", "-m", "app.worker"]
+    environment: *backend-env
+    depends_on:
+      api: { condition: service_healthy }
+    deploy:
+      replicas: ${PMA_WORKER_REPLICAS:-2}
+
+  web:
+    build: ./frontend
+    restart: unless-stopped
+    ports: ["${PMA_HTTP_PORT:-8080}:8080"]
+    depends_on:
+      api: { condition: service_healthy }
+
+  ollama:
+    image: ollama/ollama:0.5.4
+    profiles: ["ai"]
+    restart: unless-stopped
+    volumes: [ollamadata:/root/.ollama]
+    # GPU: uncomment on hosts with the NVIDIA container toolkit
+    # deploy: { resources: { reservations: { devices: [{ capabilities: [gpu] }] } } }
+
+volumes:
+  pgdata:
+  redisdata:
+  miniodata:
+  ollamadata:

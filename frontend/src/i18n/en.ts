@@ -1,0 +1,42 @@
+export default {
+  app: { name: 'Project Management Accelerator', short: 'PMA', skip: 'Skip to content' },
+  nav: {
+    executive: 'Executive', program: 'Program', governance: 'Governance', analysis: 'Analysis', manage: 'Manage',
+    overview: 'Executive Overview', tracks: 'Delivery Tracks', milestones: 'Milestones', timeline: 'Timeline',
+    decisions: 'Support & Decisions', risks: 'Risk Register', attention: 'Attention', changes: 'What Changed',
+    kpis: 'KPI Catalogue', insights: 'AI Insights', snapshots: 'Snapshots', mapping: 'Mapping', settings: 'Program Settings',
+    programs: 'Programs', portfolio: 'Portfolio', alerts: 'Alerts', admin: 'Administration', users: 'Users',
+    organisation: 'Organisation', alertRules: 'Alert Rules', audit: 'Audit Log', aiLogs: 'AI Call Log', tenants: 'Tenants',
+    account: 'My Account',
+  },
+  header: { asOf: 'As of {date}', signOut: 'Sign out', tracks: 'Tracks', active: 'Active', avgProgress: 'Avg Progress', milestones: 'Milestones', snapshot: 'Snapshot', theme: 'Toggle theme', language: 'العربية' },
+  footer: { contact: 'Contact us', support: 'Support' },
+  roles: { admin: 'Admin', pmo_editor: 'PMO Editor', super_viewer: 'Super Viewer' },
+  status: { completed: 'Completed', on_track: 'On Track', delay: 'Delay', critical_delay: 'Critical Delay', not_started: 'Not Started' },
+  cards: {
+    completion: 'Program Completion', activeTracks: 'Active Tracks', pendingActivation: 'no tracks pending activation | {n} track pending activation | {n} tracks pending activation',
+    totalMilestones: 'Total Milestones', scope: 'across {n} delivery tracks', onTrack: 'On Track', progressing: 'milestones progressing',
+    notStarted: 'Not Started', pending: 'milestones pending', decisions: 'Decisions Required', highPriority: '{n} high-priority for Committee',
+    highRisks: 'High Risks', ofTracked: 'of {n} tracked - need mitigation', timeline: 'Active Track Timeline', months: '{n} months',
+    monthOf: 'month {x} of {y} - {z}% elapsed', nextMilestone: 'Next Milestone', startsIn: 'starts {month}', action: 'Action', monitor: 'Monitor',
+    plannedVs: 'planned {p}% · {v} pts',
+  },
+  sections: {
+    tracksOverview: 'Delivery Tracks Overview', activeProgress: 'Active Track Progress', trend: 'Progress Trend',
+    keyDecisions: 'Key Support & Decisions', risks: 'Risk Register', attention: 'Attention Required', aiSummary: 'AI Executive Summary',
+    source: 'Source: {s}',
+  },
+  trend: { summary: 'Programme planned to date {p}% - Actual {a}% - {b} pts {dir} plan - {cycle} reporting cycle - {n} cycles reported - roll-up covers {c} of {t} tracks', behind: 'behind', ahead: 'ahead of', planned: 'Planned', actual: 'Actual' },
+  ms: { num: '#', milestone: 'Milestone', track: 'Track', timeline: 'Timeline', status: 'Status', health: 'Health', progress: 'Progress', variance: 'Variance' },
+  gantt: { legend: 'Legend', today: 'Today', planToDate: 'Milestone plan to date' },
+  gov: {
+    priority: 'Priority', status: 'Status', owner: 'Owner', neededBy: 'Needed by', severity: 'Severity', mitigation: 'Mitigation',
+    actionOwner: 'Action owner', dueDate: 'Due date', add: 'Add', edit: 'Edit', delete: 'Delete', save: 'Save', cancel: 'Cancel',
+    draft: 'AI draft — needs review', approve: 'Approve', reject: 'Reject', none: 'Nothing recorded yet.', description: 'Description', title: 'Title',
+  },
+  common: {
+    loading: 'Loading…', retry: 'Retry', close: 'Close', export: 'Export', search: 'Search', all: 'All', yes: 'Yes', no: 'No',
+    drill: 'View underlying tasks', noData: 'No data', upload: 'Upload', confirmDelete: 'Delete this item? This cannot be undone.',
+  },
+  login: { title: 'Sign in', email: 'Email', password: 'Password', submit: 'Sign in', sso: 'Sign in with SSO', or: 'or' },
+}

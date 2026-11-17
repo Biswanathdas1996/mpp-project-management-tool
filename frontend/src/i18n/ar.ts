@@ -1,0 +1,42 @@
+export default {
+  app: { name: 'مسرّع إدارة المشاريع', short: 'PMA', skip: 'انتقل إلى المحتوى' },
+  nav: {
+    executive: 'تنفيذي', program: 'البرنامج', governance: 'الحوكمة', analysis: 'التحليل', manage: 'الإدارة',
+    overview: 'النظرة التنفيذية', tracks: 'مسارات التنفيذ', milestones: 'المعالم الرئيسية', timeline: 'الجدول الزمني',
+    decisions: 'الدعم والقرارات', risks: 'سجل المخاطر', attention: 'يتطلب الانتباه', changes: 'ما الذي تغيّر',
+    kpis: 'دليل المؤشرات', insights: 'رؤى الذكاء الاصطناعي', snapshots: 'اللقطات', mapping: 'الربط', settings: 'إعدادات البرنامج',
+    programs: 'البرامج', portfolio: 'المحفظة', alerts: 'التنبيهات', admin: 'الإدارة', users: 'المستخدمون',
+    organisation: 'المنظمة', alertRules: 'قواعد التنبيه', audit: 'سجل التدقيق', aiLogs: 'سجل الذكاء الاصطناعي', tenants: 'المستأجرون',
+    account: 'حسابي',
+  },
+  header: { asOf: 'بتاريخ {date}', signOut: 'تسجيل الخروج', tracks: 'المسارات', active: 'النشطة', avgProgress: 'متوسط التقدم', milestones: 'المعالم', snapshot: 'اللقطة', theme: 'تبديل المظهر', language: 'English' },
+  footer: { contact: 'تواصل معنا', support: 'الدعم' },
+  roles: { admin: 'مسؤول', pmo_editor: 'محرر مكتب المشاريع', super_viewer: 'مشاهد' },
+  status: { completed: 'مكتمل', on_track: 'على المسار', delay: 'متأخر', critical_delay: 'تأخر حرج', not_started: 'لم يبدأ' },
+  cards: {
+    completion: 'نسبة إنجاز البرنامج', activeTracks: 'المسارات النشطة', pendingActivation: 'لا توجد مسارات بانتظار التفعيل | مسار واحد بانتظار التفعيل | {n} مسارات بانتظار التفعيل',
+    totalMilestones: 'إجمالي المعالم', scope: 'عبر {n} مسارات تنفيذ', onTrack: 'على المسار', progressing: 'معالم تتقدم',
+    notStarted: 'لم تبدأ', pending: 'معالم معلّقة', decisions: 'قرارات مطلوبة', highPriority: '{n} عالية الأولوية للجنة',
+    highRisks: 'مخاطر عالية', ofTracked: 'من {n} متابعة - تحتاج معالجة', timeline: 'المدة الزمنية للمسارات النشطة', months: '{n} أشهر',
+    monthOf: 'الشهر {x} من {y} - انقضى {z}%', nextMilestone: 'المعلم التالي', startsIn: 'يبدأ {month}', action: 'إجراء', monitor: 'مراقبة',
+    plannedVs: 'المخطط {p}% · {v} نقطة',
+  },
+  sections: {
+    tracksOverview: 'نظرة عامة على مسارات التنفيذ', activeProgress: 'تقدم المسارات النشطة', trend: 'اتجاه التقدم',
+    keyDecisions: 'الدعم والقرارات الرئيسية', risks: 'سجل المخاطر', attention: 'يتطلب الانتباه', aiSummary: 'الملخص التنفيذي بالذكاء الاصطناعي',
+    source: 'المصدر: {s}',
+  },
+  trend: { summary: 'المخطط حتى تاريخه {p}% - الفعلي {a}% - {b} نقطة {dir} الخطة - دورة تقارير {cycle} - {n} دورات - يغطي {c} من {t} مسارات', behind: 'خلف', ahead: 'متقدماً على', planned: 'المخطط', actual: 'الفعلي' },
+  ms: { num: '#', milestone: 'المعلم', track: 'المسار', timeline: 'الفترة', status: 'الحالة', health: 'الوضع', progress: 'التقدم', variance: 'الانحراف' },
+  gantt: { legend: 'المفتاح', today: 'اليوم', planToDate: 'المخطط حتى تاريخه' },
+  gov: {
+    priority: 'الأولوية', status: 'الحالة', owner: 'المسؤول', neededBy: 'مطلوب بحلول', severity: 'الخطورة', mitigation: 'المعالجة',
+    actionOwner: 'مسؤول الإجراء', dueDate: 'تاريخ الاستحقاق', add: 'إضافة', edit: 'تعديل', delete: 'حذف', save: 'حفظ', cancel: 'إلغاء',
+    draft: 'مسودة ذكاء اصطناعي — تحتاج مراجعة', approve: 'اعتماد', reject: 'رفض', none: 'لا توجد عناصر بعد.', description: 'الوصف', title: 'العنوان',
+  },
+  common: {
+    loading: 'جارٍ التحميل…', retry: 'إعادة المحاولة', close: 'إغلاق', export: 'تصدير', search: 'بحث', all: 'الكل', yes: 'نعم', no: 'لا',
+    drill: 'عرض المهام التفصيلية', noData: 'لا توجد بيانات', upload: 'رفع', confirmDelete: 'حذف هذا العنصر؟ لا يمكن التراجع.',
+  },
+  login: { title: 'تسجيل الدخول', email: 'البريد الإلكتروني', password: 'كلمة المرور', submit: 'دخول', sso: 'الدخول الموحد', or: 'أو' },
+}
